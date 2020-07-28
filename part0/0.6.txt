@@ -1,0 +1,7 @@
+browser->browser: JavaScript Call to add note to DOM
+browser->server: HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note_spa
+browser->server: JSON (note: "new note")
+note over server:
+server receives JSON and stores it in memory
+end note
+server-->browser: HTML response 201
