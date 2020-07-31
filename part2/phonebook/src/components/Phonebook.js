@@ -1,13 +1,18 @@
 import React from 'react'
 
-const Phonebook = ({ persons, sfilter }) => {
+const Phonebook = ({ persons, sfilter, removePerson }) => {
     return (
         <div>
             {persons.filter(person => person.name.toLowerCase().includes(sfilter.toLowerCase())).map(person => (
-                < div key={person.name} > {person.name} {person.number}</div>
+                < div key={person.id}> 
+                    {person.name} {person.number} <button onClick={(event) => {
+                        event.preventDefault()
+                        removePerson(person.id)}
+                    }>Delete</button>
+                </div>
             ))}
         </div>
     )
 }
 
-export default Phonebook
+export default Phonebook    
