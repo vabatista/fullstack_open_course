@@ -5,7 +5,7 @@ const Phonebook = ({ persons, sfilter, removePerson }) => {
         <div>
             {persons.filter(person => person.name.toLowerCase().includes(sfilter.toLowerCase())).map(person => (
                 < div key={person.id}> 
-                    {person.name} {person.number} <button onClick={(event) => {
+                    {person.name} {person.phone} <button onClick={(event) => {
                         event.preventDefault()
                         removePerson(person.id)}
                     }>Delete</button>

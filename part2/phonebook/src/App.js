@@ -50,6 +50,11 @@ const App = () => {
           setPhone('')
           setIsError(false)
           setErrorMessage("Person updated sucessful into server")
+          setTimeout(() => {
+            setErrorMessage(null)
+            setIsError(false)
+          }, 5000)          
+
         })        
       } else {
         console.log("Update canceled!")
@@ -69,18 +74,32 @@ const App = () => {
             setErrorMessage(null)
             setIsError(false)
           }, 5000)          
+        }).catch(error => {
+          console.log(error.response.data)
+          setIsError(true)
+          setErrorMessage(error.response.data)
+          setTimeout(() => {
+            setErrorMessage(null)
+            setIsError(false)
+          }, 5000)          
         })
 
     }
   }
 
   const removePerson = (personId) => {
-    console.log('Entered removePerson mehtod')
+    console.log('Entered removePerson mehtod', personId)
     if (window.confirm("Do you really want to remove this entry?")) {
       personsServices
         .remove(personId).then(returnedPerson => {
           setNewName('')
           setPhone('')
+          setErrorMessage("Person sucessful removed from server")
+          setTimeout(() => {
+            setErrorMessage(null)
+            setIsError(false)
+          }, 5000)
+
         }).catch(error => {
           setIsError(true)
           setErrorMessage("Person was already removed from server")
