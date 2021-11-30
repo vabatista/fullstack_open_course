@@ -16,7 +16,7 @@ const BlogForm = ({ blogs, setBlogs }) => {
       url: url,
       author: author
     }
-
+    console.log('New Blog', blog)
     blogService
       .create(blog)
       .then(returnedBlog => {
@@ -30,19 +30,22 @@ const BlogForm = ({ blogs, setBlogs }) => {
   return (
     <div>
       <form onSubmit={handleAddBlogEntry}>
-				Text: <input
+				Title: <input
+          id="title"
           value={newBlog}
           onChange={({ target }) => setNewBlog(target.value)}
         />
-		Author: <input
+		    Author: <input
+          id="author"
           value={author}
           onChange={({ target }) => setAuthor(target.value)}
         />
-			URL:<input
+			  URL:<input
+          id="url"
           value={url}
           onChange={({ target }) => setUrl(target.value)}
         />
-        <button type="submit">Save</button>
+        <button id="save-button" type="submit">Save</button>
       </form>
     </div>
   )

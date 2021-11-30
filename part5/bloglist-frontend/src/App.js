@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import Togglable from './components/Togglable'
 import { Button } from 'reactstrap'
+
 import Blog from './components/Blog'
 import BlogForm from './components/BlogForm'
+import LoginForm from './components/LoginForm'
 
 import blogService from './services/blogs'
 import loginService from './services/login'
@@ -13,9 +15,24 @@ const App = () => {
   const [blogs, setBlogs] = useState([])
 
   const [user, setUser] = useState(null)
+
   const [password, setPassword] = useState('')
   const [username, setUsername] = useState('')
   const [errorMsg, setErrorMsg] = useState('')
+
+  useEffect(() => {
+    blogService.getAll().then(blogs =>
+      setBlogs(blogs)
+    )
+  }, [])
+
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedBlogApp')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+    }
+  }, [])
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -34,7 +51,7 @@ const App = () => {
       setPassword('')
     } catch (exception) {
       console.log('Wrong credentials')
-      setErrorMsg('wrong credentials')
+      setErrorMsg('Wrong credentials')
       setTimeout(() => {
         setErrorMsg(null)
       }, 5000)
@@ -50,33 +67,17 @@ const App = () => {
     setPassword('')
   }
 
-
-
   const loginForm = () => (
-    <form onSubmit={handleLogin}>
-      <div>
-				User:
-        <input
-          type="text"
-          value={username}
-          name="Username"
-          onChange={({ target }) => setUsername(target.value)}
-        />
-      </div>
-      <div>
-				Password:
-        <input
-          type="password"
-          value={password}
-          name="Password"
-          onChange={({ target }) => setPassword(target.value)}
-        />
-      </div>
-      <button type="submit">login</button>
-    </form>
+    <Togglable buttonLabel="log in">
+      <LoginForm
+        username={username}
+        password={password}
+        handleUsernameChange={({ target }) => setUsername(target.value)}
+        handlePasswordChange={({ target }) => setPassword(target.value)}
+        handleSubmit={handleLogin}
+      />
+    </Togglable>
   )
-
-
 
   const blogForm = () => (
     <Togglable buttonLabel="New Blog Entry">
@@ -84,19 +85,7 @@ const App = () => {
     </Togglable>
   )
 
-  useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs(blogs)
-    )
-  }, [])
 
-  useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedBlogApp')
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      setUser(user)
-    }
-  }, [])
 
   return (
     <div>
